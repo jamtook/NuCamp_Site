@@ -1,0 +1,39 @@
+import React from "react";
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+
+function RenderCard({item}) {
+    return (
+        <Card>
+            <CardImg src={item.image} alt={item.name} />
+            <CardBody>
+                <CardTitle>{item.name}</CardTitle>
+                <CardText>{item.description}</CardText>
+            </CardBody>
+        </Card>
+    );
+}
+
+function Home(props) {
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-md m-1">
+                    {/*we pass the featured campsite, promotion, and partner objects into Home from the Main
+                    component and we retrieve those here using props.campsite/promotion/partner. So the featured
+                    campsite object gets passed in here and then it gets passed to RenderCard which creates a card 
+                    with all the properties from the featured campsite object, the img url, name, description, and 
+                    same for the promotion and partners. */}
+                    <RenderCard item={props.campsite} />
+                </div>
+                <div className="col-md m-1">
+                    <RenderCard item={props.promotion} />
+                </div>
+                <div className="col-md m-1">
+                    <RenderCard item={props.partner} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Home;
