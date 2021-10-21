@@ -68,7 +68,7 @@ class Main extends Component {
                     <Route
                         exact 
                         path='/aboutus'
-                        render={() => <About props={this.state.partners} />}
+                        render={() => <About partners={this.state.partners} />}
                         />
                     <Redirect to='/home' />
                 </Switch>

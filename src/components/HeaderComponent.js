@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react/cjs/react.production.min";
-import { Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron } from "reactstrap";
-import { Navlink } from 'react-router-dom';
+import { Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Nav } from "reactstrap";
+import { NavLink } from 'react-router-dom';
 
 class Header extends Component {
     //we want to navbar to be responsive. add a couple of items to its state to help w/the navbar toggler
@@ -39,23 +39,31 @@ class Header extends Component {
                 <div className="container">
                     <NavbarBrand className="mr-auto" href="/"><img src="/assets/images/logo.png"
                     height="30" width="30" alt="NuCamp Logo" /></NavbarBrand>
-                    <barToggler onClick={this.toggleNav} />
+                    <NavbarToggler onClick={this.toggleNav} />
                     <Collapse isOpen={this.state.isNavOpen} navbar>
-                           {/* <Nav navbar> */}
-                                <NavItem className="nav-link" to="/home">
-                                    <i className="fa fa-home fa-lg" /> Home
+                            <Nav navbar> 
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/home">
+                                        <i className="fa fa-home fa-lg" /> Home
+                                    </NavLink>
                                 </NavItem>
-                                <NavItem className="nav-link" to="/directory">
-                                    <i className="fa fa-list fa-lg" /> Directory
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/directory">
+                                        <i className="fa fa-list fa-lg" /> Directory
+                                    </NavLink>
                                 </NavItem>
-                                <NavItem className="nav-link" to="/aboutus">
-                                    <i className="fa fa-info fa-lg" /> About
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/aboutus">
+                                        <i className="fa fa-info fa-lg" /> About
+                                    </NavLink>
                                 </NavItem>
-                                <NavItem className="nav-link" to="/contactus">
-                                    <i className="fa fa-address-card fa-lg" /> Contact Us
+                                <NavItem>
+                                    <NavLink className="nav-link" to="/contactus">
+                                        <i className="fa fa-address-card fa-lg" /> Contact Us
+                                    </NavLink>
                                 </NavItem>
 
-                               {/* </Nav> */}
+                            </Nav>
                     </Collapse>
                 </div>
                 </Navbar>

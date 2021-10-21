@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 
- function  renderCampsite({campsite}){
+ function  RenderCampsite({campsite}){
         return(
             <div className="col-md-5 m-1">
                 <Card>
@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
         );
     }
 
-  function  renderComments({comments}){
+  function  RenderComments({comments}){
         if(comments){
             return(
                 <div className="col-md-5 m-1">
@@ -35,6 +35,7 @@ import { Link } from 'react-router-dom';
 
 //if you click on a picture, this is where it gets rendered
     function CampsiteInfo(props) {
+        console.log(props);
         if(props.campsite){
             return(
                 <div className="container">
@@ -49,8 +50,8 @@ import { Link } from 'react-router-dom';
                         </div>
                     </div>
                     <div className="row">
-                        <renderCampsite campsite={props.campsite} />
-                        <renderComments comments={props.comments} />
+                        <RenderCampsite campsite={props.campsite} />
+                        <RenderComments comments={props.comments} />
                     
                     </div>
                 </div>
