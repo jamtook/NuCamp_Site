@@ -1,7 +1,14 @@
 import React from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Loading } from './LoadingComponent';
 
-function RenderCard({item}) {
+function RenderCard({item, isLoading, errMess}) {
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (errMess) {
+        return <h4>{errMess}</h4>;
+    }
     return (
         <Card>
             <CardImg src={item.image} alt={item.name} />
@@ -23,7 +30,11 @@ function Home(props) {
                     campsite object gets passed in here and then it gets passed to RenderCard which creates a card 
                     with all the properties from the featured campsite object, the img url, name, description, and 
                     same for the promotion and partners. */}
-                    <RenderCard item={props.campsite} />
+                    <RenderCard 
+                        item={props.campsite} 
+                        isLoading={props.campsitesLoading}
+                        errMess={props.campsitesErrMess}
+                    />
                 </div>
                 <div className="col-md m-1">
                     <RenderCard item={props.promotion} />

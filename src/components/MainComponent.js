@@ -11,6 +11,7 @@ import Contact from './ContactComponent';
 import About from "./AboutComponent";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { addComment, fetchCampsites } from '../redux/ActionCreators';
 
 //get the state from Redux by setting up the below function(state is the argument)
 const mapStateToProps = state => {
@@ -21,7 +22,19 @@ const mapStateToProps = state => {
         promotions: state.promotions
     }
 }
+//fetchCampsites is an arrow function w no arguments and its calling the fetchCampsites()
+//action creator. Now this fetchCampsites action creator is avaliable to the 
+//MainComponent as props.
+const mapDispatchToProps = {
+    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
+    fetchCampsites: () => (fetchCampsites())
+};
+
 class Main extends Component {  
+
+    componentDidMount() {
+        this.props.fetchCampsites();
+    }
   
     render() {
         //locally scoped HomePage, only accesable inside MainComponent.js
@@ -31,9 +44,10 @@ class Main extends Component {
             return(
                 <Home 
                     /*the 0 is for the array index to pull that object out of the array then
-                     pass it to home component as props */
-                    campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
-                    /*the 0 is for the array index to pull that object out of the array */
+                    //pass it to home component as props */
+                    campsite={this.props.campsites.campsites.filter(campsite => campsite.featured)[0]}
+                    campsitesLoading={this.props.campsites.isLoading}
+                    campsitesErrMess={this.props.campsites.errMess}
                     promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
                     partner={this.props.partners.filter(partner => partner.featured)[0]}
                 />
@@ -44,12 +58,14 @@ class Main extends Component {
         const CampsiteWithId = ({match}) => {
             return (
                 <CampsiteInfo 
-                    campsite={this.props.campsites.filter(campsite => campsite.id ===
+                    campsite={this.props.campsites.campsites.filter(campsite => campsite.id ===
                     +match.params.campsiteId)[0]}
-                    //with comments, we want the whole array not just a single comment so
-                    //we dont have to use the zero index ([0]) here.  
+                    campsitesLoading={this.props.campsites.isLoading}
+                    campsitesErrMess={this.props.campsites.errMess}
                     comments={this.props.comments.filter(comment => comment.campsiteId ===
-                    +match.params.campsiteId)} />
+                    +match.params.campsiteId)} 
+                    addComment ={this.props.addComment}
+                    />
             )
         }
         return (
@@ -72,5 +88,6 @@ class Main extends Component {
         );
     }
 }
-
-export default withRouter(connect(mapStateToProps)(Main));
+//putting mapDispatchToProps in here has mad addComment, ActionCreators.js function 
+//available inside the main component as a prop 
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
