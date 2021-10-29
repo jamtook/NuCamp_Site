@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 function RenderCard({item, isLoading, errMess}) {
     if (isLoading) {
@@ -11,7 +12,7 @@ function RenderCard({item, isLoading, errMess}) {
     }
     return (
         <Card>
-            <CardImg src={item.image} alt={item.name} />
+             <CardImg src={baseUrl + item.image} alt={item.name} />
             <CardBody>
                 <CardTitle>{item.name}</CardTitle>
                 <CardText>{item.description}</CardText>
@@ -21,6 +22,7 @@ function RenderCard({item, isLoading, errMess}) {
 }
 
 function Home(props) {
+    console.log("Home props:", props);
     return (
         <div className="container">
             <div className="row">
@@ -30,10 +32,10 @@ function Home(props) {
                     campsite object gets passed in here and then it gets passed to RenderCard which creates a card 
                     with all the properties from the featured campsite object, the img url, name, description, and 
                     same for the promotion and partners. */}
-                    <RenderCard 
-                        item={props.campsite} 
-                        isLoading={props.campsitesLoading}
-                        errMess={props.campsitesErrMess}
+                     <RenderCard
+                        item={props.promotion}
+                        isLoading={props.promotionLoading}
+                        errMess={props.promotionErrMess}
                     />
                 </div>
                 <div className="col-md m-1">

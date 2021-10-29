@@ -19,7 +19,7 @@ export const ConfigureStore = () => {
             campsites: Campsites,
             comments: Comments,
             partners: Partners,
-            promotions: Promotions
+            promotions: Promotions,
             //we'll pass createForms to combineReducers as one of the arguments
             //using the spread syntax and giving it an argument that contains a
             //model name for the entire form, we'll call feedbackForm. We will 

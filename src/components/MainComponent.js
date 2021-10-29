@@ -11,31 +11,36 @@ import Contact from './ContactComponent';
 import About from "./AboutComponent";
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addComment, fetchCampsites } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
+import { postComment, fetchCampsites, fetchComments, fetchPromotions } from '../redux/ActionCreators';
 
-//get the state from Redux by setting up the below function(state is the argument)
+//setting up mapDispatchToProps this way makes it easy for us to dispatch actions to the redux store
 const mapStateToProps = state => {
-    return {
-        campsites: state.campsites,
-        comments: state.comments,
-        partners: state.partners, 
-        promotions: state.promotions
-    }
-}
+   return {
+       campsites: state.campsites,
+       comments: state.comments,
+       partners: state. partners,
+       promotions: state.promotions
+   }
+};
+
 //fetchCampsites is an arrow function w no arguments and its calling the fetchCampsites()
 //action creator. Now this fetchCampsites action creator is avaliable to the 
 //MainComponent as props.
 const mapDispatchToProps = {
-    addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
-    fetchCampsites: () => (fetchCampsites())
-    resetFeedbackForm: () => (actions.reset('feedbackForm'))
+    postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text)),
+    fetchCampsites: () => (fetchCampsites()),
+    resetFeedbackForm: () => (actions.reset('feedbackForm')),
+    fetchComments: () => (fetchComments()),
+    fetchPromotions: () => (fetchPromotions())
 };
 
 class Main extends Component {  
 
     componentDidMount() {
         this.props.fetchCampsites();
+        this.props.fetchComments();
+        this.props.fetchPromotions();
     }
   
     render() {
@@ -50,7 +55,9 @@ class Main extends Component {
                     campsite={this.props.campsites.campsites.filter(campsite => campsite.featured)[0]}
                     campsitesLoading={this.props.campsites.isLoading}
                     campsitesErrMess={this.props.campsites.errMess}
-                    promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
+                    promotion={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
+                    promotionLoading={this.props.promotions.isLoading}
+                    promotionErrMess={this.props.promotions.errMess}
                     partner={this.props.partners.filter(partner => partner.featured)[0]}
                 />
                     
@@ -59,15 +66,14 @@ class Main extends Component {
 
         const CampsiteWithId = ({match}) => {
             return (
-                <CampsiteInfo 
-                    campsite={this.props.campsites.campsites.filter(campsite => campsite.id ===
-                    +match.params.campsiteId)[0]}
-                    campsitesLoading={this.props.campsites.isLoading}
-                    campsitesErrMess={this.props.campsites.errMess}
-                    comments={this.props.comments.filter(comment => comment.campsiteId ===
-                    +match.params.campsiteId)} 
-                    addComment ={this.props.addComment}
-                    />
+                <CampsiteInfo
+                    campsite={this.props.campsites.campsites.filter(campsite => campsite.id === +match.params.campsiteId)[0]}
+                    isLoading={this.props.campsites.isLoading}
+                    errMess={this.props.campsites.errMess}
+                    comments={this.props.comments.comments.filter(comment => comment.campsiteId === +match.params.campsiteId)}
+                    commentsErrMess={this.props.comments.errMess}
+                    postComment={this.props.postComment}
+                />   
             )
         }
         return (
@@ -90,6 +96,6 @@ class Main extends Component {
         );
     }
 }
-//putting mapDispatchToProps in here has mad addComment, ActionCreators.js function 
+//putting mapDispatchToProps in here has postComment, ActionCreators.js function 
 //available inside the main component as a prop 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

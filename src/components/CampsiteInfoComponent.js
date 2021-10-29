@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {Button, Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Modal, ModalHeader, ModalBody, Label} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import {Control, LocalForm, Errors } from 'react-redux-form';
-import { addComment } from '@babel/types';
+import { postComment } from '@babel/types';
 import { Loading } from './LoadingComponent';
-
+import { baseUrl } from '../shared/baseUrl';
 
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
@@ -14,7 +14,7 @@ function  RenderCampsite({campsite}){
     return(
         <div className="col-md-5 m-1">
             <Card>
-                <CardImg top src={campsite.image} alt ={campsite.name} />
+                <CardImg top src={baseUrl + campsite.image} alt={campsite.name} />
                 <CardBody>
                     <CardText>{campsite.description}</CardText>
                 </CardBody>
@@ -23,8 +23,8 @@ function  RenderCampsite({campsite}){
     );
 }
 
-function  RenderComments({comments, addComment, campsiteId}) {
-    {console.log("comment: ", addComment)};
+function  RenderComments({comments, postComment, campsiteId}) {
+    {console.log("comment: ", postComment)};
     if(comments) {
         return(
             <div className="col-md-5 m-1">
@@ -40,7 +40,7 @@ function  RenderComments({comments, addComment, campsiteId}) {
                     );
                 })}
                 {console.log("above CommentForm Component ", comments)};
-                <CommentForm   addComment={addComment} campsiteId={campsiteId}  />  
+                <CommentForm campsiteId={campsiteId} postComment={postComment} />  
                 {console.log("below CommentForm Component ", comments)};-----------------------
             </div>
         );
@@ -73,7 +73,7 @@ class CommentForm extends Component {
     handleSubmit(values) {
         console.log("handleSubmit")
         this.toggleModal()
-        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text)
+        this.props.postComment(this.props.campsiteId, values.rating, values.author, values.text)
         console.log("hS: ", values.author, values.text);
     }
 
@@ -181,7 +181,7 @@ function CampsiteInfo(props) {
                         <RenderCampsite campsite={props.campsite} />
                         <RenderComments 
                            
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             campsiteId={props.campsiteId}
                             comments={props.comments} 
                          
